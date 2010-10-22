@@ -35,6 +35,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
+  map.resources :users
+
   map.contact '/contact', :controller => 'pages', :action => 'contact'
   map.about   '/about',   :controller => 'pages', :action => 'about'
   map.help    '/help',    :controller => 'pages', :action => 'help'
