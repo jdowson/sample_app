@@ -57,4 +57,20 @@ describe PagesController do
   end
 
 
+  describe "GET 'help'" do
+
+    it "should be successful" do
+      get 'help'
+      response.should be_success
+    end
+
+    it "should have the right title" do
+      get 'help'
+      response.should have_tag("title",
+                               "Ruby on Rails Tutorial Sample App | Help")
+    end
+  
+  end
+
+
 end
