@@ -3,7 +3,14 @@
 
 class ApplicationController < ActionController::Base
 
-  helper :all # include all helpers, all the time
+  helper :all # include all helpers, all the time (for views)
+
+  # explicitly including lets controllers see a helper too
+  include SessionsHelper
+
+  # SSL support
+  #include SslRequirement
+
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log

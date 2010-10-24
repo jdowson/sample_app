@@ -16,6 +16,8 @@
       </div>
       <%= render 'layouts/footer' %>
       <%= debug(params) if Rails.env.development? %>
+      <%= "REMEMBER TOKEN S: #{session[:remember_token]}<br/>" if Rails.env.development? %>
+      <%= "REMEMBER TOKEN C: #{cookies[:remember_token]}<br/>" if Rails.env.development? %>
     </div>
   </body>
 </html>

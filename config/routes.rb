@@ -36,11 +36,14 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   map.resources :users
-
-  map.contact '/contact', :controller => 'pages', :action => 'contact'
-  map.about   '/about',   :controller => 'pages', :action => 'about'
-  map.help    '/help',    :controller => 'pages', :action => 'help'
-  map.signup  '/signup',  :controller => 'users', :action => 'new'  
+  map.resources :sessions, :only => [:new, :create, :destroy]
+  
+  map.signin  '/signin',  :controller => 'sessions', :action => 'new'
+  map.signout '/signout', :controller => 'sessions', :action => 'destroy'  
+  map.contact '/contact', :controller => 'pages',    :action => 'contact'
+  map.about   '/about',   :controller => 'pages',    :action => 'about'
+  map.help    '/help',    :controller => 'pages',    :action => 'help'
+  map.signup  '/signup',  :controller => 'users',    :action => 'new'  
 
   map.root    :controller => 'pages', :action => 'home'
 

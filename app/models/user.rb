@@ -49,6 +49,11 @@ class User < ActiveRecord::Base
     encrypt(submitted_password) == self.encrypted_password
   end
   
+  def remember_me!
+    self.remember_token = encrypt("#{salt}--#{id}--#{Time.now.utc}")
+    save_without_validation
+  end
+  
   
   # Class Methods
   def self.authenticate(email, submitted_password)
@@ -60,12 +65,14 @@ class User < ActiveRecord::Base
   
   private
 
-   def encrypt_password
+  def encrypt_password
+    unless password.nil?
       self.salt = make_salt
       self.encrypted_password = encrypt(password)
     end
+  end
 
-    def encrypt(string)
+  def encrypt(string)
       secure_hash("#{salt}#{string}")
     end
 
