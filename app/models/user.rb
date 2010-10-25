@@ -1,13 +1,17 @@
 # == Schema Information
-# Schema version: 20101022152043
+# Schema version: 20101024182213
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  email              :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  encrypted_password :string(255)
+#  salt               :string(255)
+#  remember_token     :string(255)
+#  admin              :boolean
 #
 
 class User < ActiveRecord::Base
@@ -17,6 +21,9 @@ class User < ActiveRecord::Base
     
   # list attributes accessible from outside the model
   attr_accessible :name, :email, :password, :password_confirmation
+
+  # linked models
+  has_many :microposts, :dependent => :destroy
 
   # Constants
   EmailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -52,6 +59,11 @@ class User < ActiveRecord::Base
   def remember_me!
     self.remember_token = encrypt("#{salt}--#{id}--#{Time.now.utc}")
     save_without_validation
+  end
+  
+  def feed
+    # This is preliminary. See Chapter 12 for the full implementation.
+    Micropost.all(:conditions => ["user_id = ?", id])
   end
   
   

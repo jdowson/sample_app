@@ -1,0 +1,27 @@
+<% form_for @micropost do |f| %>
+  <%= f.error_messages %>
+  <div class="field">
+    <%= f.text_area :content, {:onkeyup => 'jsContentChange(this)', :onblur => 'jsContentChange(this)'}%>
+  </div>
+  <div class="mpsubmit actions">
+    <%= f.submit "Submit" %>
+  </div>
+  <div class="charcount" id="divCharCount"></div>
+<% end %> 
+
+<script language="javascript">
+
+function jsContentChange(oCtrl)
+{
+  if (oCtrl.value.length > 140) oCtrl.value = oCtrl.value.substring(0, 140)
+
+  var iLength = 140 - oCtrl.value.length;
+
+  var oDisplay = document.getElementById("divCharCount");
+
+  var sCount = iLength.toString() + " character" + (iLength == 1 ? '' : 's') + ' remaining';
+
+  oDisplay.innerText = sCount;
+}
+
+</script>

@@ -27,13 +27,17 @@ module SessionsHelper
   end
 
   def sign_out
-    cookies.delete(:remember_token)
-    session.delete(:remember_token)
+    #cookies.delete(:remember_token)
+    session[:remember_token] = nil
     self.current_user = nil
   end
 
   def current_user?(user)
     user == current_user
+  end
+  
+  def authenticate
+    deny_access unless signed_in?
   end
   
   def deny_access
