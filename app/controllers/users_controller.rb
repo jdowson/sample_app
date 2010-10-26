@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate,     :only => [:edit, :update, :index, :destroy]
+  before_filter :authenticate,     :except => [:show, :new, :create]
   before_filter :correct_user,     :only => [:edit, :update]
   before_filter :admin_user,       :only => :destroy
   before_filter :not_self,         :only => :destroy
   before_filter :unsigned_in_only, :only => [:create, :new]
-  
+   
   def new
     @user  = User.new
     @title = "Sign up"
@@ -54,6 +54,37 @@ class UsersController < ApplicationController
     @user.destroy
     flash[:success] = "User destroyed."
     redirect_to users_path
+  end
+  
+  # def following
+  #   @title = "Following"
+  #   @user = User.find(params[:id])
+  #   @users = @user.following.paginate(:page => params[:page])
+  #   render 'show_follow'
+  # end
+  # 
+  # def followers
+  #   @title = "Followers"
+  #   @user = User.find(params[:id])
+  #   @users = @user.followers.paginate(:page => params[:page])
+  #   render 'show_follow'
+  # end
+  # 
+  # refactored to the below...note the send(method) to call a method by name
+  
+  def following
+    show_follow(:following)
+  end
+
+  def followers
+    show_follow(:followers)
+  end
+
+  def show_follow(action)
+    @title = action.to_s.capitalize
+    @user = User.find(params[:id])
+    @users = @user.send(action).paginate(:page => params[:page])
+    render 'show_follow'
   end
   
   
